@@ -1,0 +1,58 @@
+[
+  {
+    "profile": "lan",
+    "set_rtt": 1,
+    "ping_rtt": 1.185,
+    "activation_8kb": 0.002840980887413025,
+    "verify_round_513kb": 0.017547916620969772
+  },
+  {
+    "profile": "metro",
+    "set_rtt": 20,
+    "ping_rtt": 20.445,
+    "activation_8kb": 0.042342035099864006,
+    "verify_round_513kb": 0.24018817581236362
+  },
+  {
+    "profile": "runpod-tx",
+    "set_rtt": 80,
+    "ping_rtt": 81.052,
+    "activation_8kb": 0.16583470813930035,
+    "verify_round_513kb": 0.9592652432620525
+  },
+  {
+    "profile": "wan-typical",
+    "set_rtt": 100,
+    "ping_rtt": 100.096,
+    "activation_8kb": 0.20975258946418762,
+    "verify_round_513kb": 1.1933727953583002
+  },
+  {
+    "profile": "vast-proxy",
+    "set_rtt": 300,
+    "ping_rtt": 295.939,
+    "activation_8kb": 0.6300748288631439,
+    "verify_round_513kb": 4.558949848636985
+  },
+  {
+    "profile": "wan-bad",
+    "set_rtt": 800,
+    "ping_rtt": 822.51,
+    "activation_8kb": 1.7222258988767862,
+    "verify_round_513kb": 30.092795677483082
+  },
+  {
+    "profile": "thin-uplink",
+    "set_rtt": 100,
+    "ping_rtt": 101.449,
+    "activation_8kb": 0.21635756641626358,
+    "verify_round_513kb": 1.5870823804289103
+  },
+  {
+    "profile": "lossy-quic",
+    "set_rtt": 60,
+    "ping_rtt": 60.341,
+    "activation_8kb": 0.128726277500391,
+    "verify_round_513kb": 2.7380047868937254
+  }
+]

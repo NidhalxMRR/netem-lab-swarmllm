@@ -1,0 +1,74 @@
+[
+  {
+    "profile": "lan",
+    "set_rtt": 1,
+    "meas_rtt": 1.202,
+    "mdev": 0.453,
+    "set_loss": 0.0,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "metro",
+    "set_rtt": 20,
+    "meas_rtt": 20.343,
+    "mdev": 1.543,
+    "set_loss": 0.0,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "runpod-tx",
+    "set_rtt": 80,
+    "meas_rtt": 79.64,
+    "mdev": 3.55,
+    "set_loss": 0.0,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "wan-typical",
+    "set_rtt": 100,
+    "meas_rtt": 101.347,
+    "mdev": 6.709,
+    "set_loss": 0.1,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "vast-proxy",
+    "set_rtt": 300,
+    "meas_rtt": 292.204,
+    "mdev": 26.099,
+    "set_loss": 0.5,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "wan-bad",
+    "set_rtt": 800,
+    "meas_rtt": 800.572,
+    "mdev": 70.261,
+    "set_loss": 2.0,
+    "meas_loss": 0.0,
+    "rate": "-"
+  },
+  {
+    "profile": "thin-uplink",
+    "set_rtt": 100,
+    "meas_rtt": 98.336,
+    "mdev": 8.043,
+    "set_loss": 0.1,
+    "meas_loss": 0.0,
+    "rate": "10mbit"
+  },
+  {
+    "profile": "lossy-quic",
+    "set_rtt": 60,
+    "meas_rtt": 60.619,
+    "mdev": 7.192,
+    "set_loss": 3.0,
+    "meas_loss": 16.7,
+    "rate": "-"
+  }
+]
