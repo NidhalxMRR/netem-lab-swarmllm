@@ -15,7 +15,7 @@ import subprocess
 import sys
 import time
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = "/home/nidhal/ai4all/netem-lab"
 os.environ["NETEM_LAB_INNER"] = "1"
 
 _s = importlib.util.spec_from_file_location("nl", HERE + "/netem-lab.py")

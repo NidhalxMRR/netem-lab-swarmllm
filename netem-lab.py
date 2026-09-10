@@ -226,10 +226,9 @@ def cmd_sweep():
         rows.append(r)
         print(f"{r['profile']}\t{r['set_rtt']}\t{r['meas_rtt']}\t{r['mdev']}"
               f"\t{r['set_loss']}\t{r['meas_loss']}\t{r['rate']}")
-    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sweep.json")
-    with open(out, "w") as f:
+    with open(os.path.expanduser("~/ai4all/netem-lab/sweep.json"), "w") as f:
         json.dump(rows, f, indent=2)
-    print(f"\n# saved: {out}")
+    print("\n# saved: ~/ai4all/netem-lab/sweep.json")
 
 
 def cmd_profile(name):
@@ -301,11 +300,47 @@ def cmd_verify():
           f"{'PASS' if ok else 'FAIL'} ({lost_pct:.1f}%)")
     if not ok: fails.append(5)
 
-    host = subprocess.run([TC, "qdisc", "show"], capture_output=True, text=True)
-    leaked = "netem" in host.stdout
-    print(f"6. host qdiscs clean (no leak) .............. "
-          f"{'FAIL' if leaked else 'PASS'}")
-    if leaked: fails.append(6)
+    # Check 6 had TWO bugs, both of which made it a false alarm rather than a
+    # missed leak, and both found on 2026-09-10 when it failed on a host that
+    # `tc qdisc show` proved was clean.
+    #
+    # 1. WRONG NAMESPACE. By the time this runs we are already inside the
+    #    unprivileged netns (the harness re-execs itself there), so this read
+    #    the SANDBOX's qdiscs and called them "host". The sandbox is exactly
+    #    where netem is supposed to be, so the check could only ever have
+    #    reported the thing it was written to forbid. The host is unreachable
+    #    from in here by construction -- which is the isolation property this
+    #    check exists to defend, so it cannot be tested from this side at all.
+    # 2. IT RACED TEARDOWN. Deleting a veth pair removes its qdiscs
+    #    ASYNCHRONOUSLY; measured here, the entry survives ~0.2s past
+    #    __exit__. Sampling immediately reads the dying link and calls it a
+    #    leak.
+    #
+    # So the honest check is: after a link is closed, does its qdisc go away
+    # WITHIN a bounded settle time? A leak is a qdisc that never goes, not one
+    # still on its way out. Polled rather than slept so a fast teardown stays
+    # fast.
+    def _netem_present():
+        r = subprocess.run([TC, "qdisc", "show"], capture_output=True, text=True)
+        return "netem" in r.stdout
+
+    with ShapedLink(100) as link:
+        during = _netem_present()
+    deadline = time.time() + 5.0
+    while _netem_present() and time.time() < deadline:
+        time.sleep(0.05)
+    after = _netem_present()
+
+    # NULL CONTROL. "It is gone" is worthless if the probe cannot see a qdisc
+    # that IS there: a typo'd binary or an empty parse would also read "clean".
+    # `during` is the positive control -- the same probe, run while shaping is
+    # known to be up, must say True. If it does not, the check is blind and
+    # this is reported as a FAILURE rather than a pass.
+    ok = during and not after
+    print(f"6. qdiscs released after close (settles) .... "
+          f"{'PASS' if ok else 'FAIL'} "
+          f"(probe saw shaping={during}, still present after={after})")
+    if not ok: fails.append(6)
 
     print()
     if fails:
